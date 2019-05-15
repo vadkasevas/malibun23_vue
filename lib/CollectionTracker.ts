@@ -1,6 +1,8 @@
 /// <reference path="../typings/meteor/malibun23:stack.d.ts" />
 import {MalibunCollection} from 'meteor/malibun23:stack';
 import {EventEmitter} from 'events';
+import {Meteor} from 'meteor/meteor';
+import {Mongo} from "meteor/mongo";
 
 export class CollectionTracker<T> extends EventEmitter{
     collection:MalibunCollection<T>;

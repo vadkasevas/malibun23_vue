@@ -1,6 +1,7 @@
 import {_} from 'meteor/underscore';
 import __ from 'lodash';
 import {isset, MalibunCollection, safeGet} from "meteor/malibun23:stack";
+import {Meteor} from "meteor/meteor";
 
 export class VueSchemaBuilder{
     vueSchema:any;
@@ -26,10 +27,13 @@ export class VueSchemaBuilder{
     static namedAutoComplete(collection,fieldName,schemaOptions,options):any{
         let multiple = safeGet(options,'multiple',false);
         fieldName = fieldName || 'name';
+        let collectionName = _.isString(collection)? collection:collection.collectionName;
+
         var getCollection = function(){
-            return collection;
+            //@ts-ignore
+            return MalibunCollection.byName(collectionName);
         };
-        var methodName = (typeof collection=='string') ? `${collection}namedAutoComplete` : `${collection._name}namedAutoComplete`;
+        var methodName = `${collectionName}namedAutoComplete`;
         if(safeGet(options,'multiple',false)){
             methodName+='Multiple';
         }
@@ -54,6 +58,7 @@ export class VueSchemaBuilder{
             if(!isset(Meteor.default_server.method_handlers[methodName])) {
                 var method = {};
                 method[methodName] = methodFunction || function (options) {
+                    let collection = getCollection();
                     this.unblock();
                     var findOptions = limit ? {limit:limit} : {};
                     var condition = options.searchText ? {$or : [{ [fieldName]: {$regex:new RegExp(options.searchText, "i") }} ] } : {};

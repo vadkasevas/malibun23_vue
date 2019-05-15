@@ -9,6 +9,7 @@ export default Vue.extend({
     data() {
         return {model: {}}
     },
+    //@ts-ignore
     meteor:{
         model () {
             let collectionName = _.isString(this.collection)? this.collection:this.collection._name;
