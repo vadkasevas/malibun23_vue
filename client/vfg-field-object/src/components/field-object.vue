@@ -82,9 +82,13 @@
 
       addKey() {
         //TODO change to vm.$set
-        Vue.set(this.value, this.newKeyName, undefined);
-        Vue.set(this.keyTypes, this.newKeyName, this.newKeyType);
-        this.newKeyName = "";
+        try {
+          //Vue.set (this.value, this.newKeyName, undefined);
+          //Vue.set (this.keyTypes, this.newKeyName, this.newKeyType);
+          this.newKeyName = "";
+        }catch (e) {
+          console.log(e);
+        }
       }
     }
   };
