@@ -9,7 +9,7 @@
             item-text="label"
             item-value="value"
             :hide-selected="true"
-            multiple
+            :multiple="multiple"
             attach
     >
         <template v-slot:selection="data">

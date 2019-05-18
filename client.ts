@@ -9,7 +9,7 @@ import { FieldArray } from 'vfg-field-array';
 
 //@ts-ignore
 import Autocomplete from './client/VueAutocomplete';
-Vue.component("fieldAutocompleMultiple", Autocomplete);
+Vue.component("fieldAutocomple", Autocomplete);
 
 
 Vue.use(VueFormGenerator);

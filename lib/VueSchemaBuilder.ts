@@ -27,7 +27,7 @@ export class VueSchemaBuilder{
     static namedAutoComplete(collection,fieldName,schemaOptions,options):any{
         let multiple = safeGet(options,'multiple',false);
         fieldName = fieldName || 'name';
-        let collectionName = _.isString(collection)? collection:collection.collectionName;
+        let collectionName = _.isString(collection)? collection:collection._name;
 
         var getCollection = function(){
             //@ts-ignore
@@ -59,6 +59,9 @@ export class VueSchemaBuilder{
                 var method = {};
                 method[methodName] = methodFunction || function (options) {
                     let collection = getCollection();
+                    if(!collection){
+                        console.log('collections:',_.keys(MalibunCollection.collections),'')
+                    }
                     this.unblock();
                     var findOptions = limit ? {limit:limit} : {};
                     var condition = options.searchText ? {$or : [{ [fieldName]: {$regex:new RegExp(options.searchText, "i") }} ] } : {};
@@ -84,7 +87,8 @@ export class VueSchemaBuilder{
         }
 
 
-        schemaOptions['type'] = multiple ? 'autocompleMultiple' : 'autocomple';
+        schemaOptions['type'] = 'autocomple';
+        schemaOptions['multiple'] = !!multiple;
         schemaOptions['methodName'] = methodName;
         return schemaOptions;
     }
