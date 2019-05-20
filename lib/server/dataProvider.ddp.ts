@@ -18,7 +18,8 @@ Meteor.publish('dataStream',function(channel,collectionName, condition, options)
         options.sort = {text:1};
     }
     console.log(collectionName,condition,options);
-    let observer = collection.find(condition,options).observeChanges({
+    //@ts-ignore
+    let observer = collection.publishCursor( Meteor.currentUser(this.userId), condition, options ).observeChanges({
         added(id,fields){
             fields['_id'] = id;
             let _id = `${channel}:${id}`;

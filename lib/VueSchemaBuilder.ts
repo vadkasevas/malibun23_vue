@@ -59,9 +59,6 @@ export class VueSchemaBuilder{
                 var method = {};
                 method[methodName] = methodFunction || function (options) {
                     let collection = getCollection();
-                    if(!collection){
-                        console.log('collections:',_.keys(MalibunCollection.collections),'')
-                    }
                     this.unblock();
                     var findOptions = limit ? {limit:limit} : {};
                     var condition = options.searchText ? {$or : [{ [fieldName]: {$regex:new RegExp(options.searchText, "i") }} ] } : {};

@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import Vue from 'vue';
 // @ts-ignore
 /// <reference path="./typings/vue-form-generator.d.ts" />
-import VueFormGenerator from "vue-form-generator";
+import VueFormGenerator from "./client/MeteorVueFormGenerator/index";
 // @ts-ignore
 import { FieldArray } from 'vfg-field-array';
 
