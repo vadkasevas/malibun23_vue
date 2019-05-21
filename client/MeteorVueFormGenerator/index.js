@@ -8,7 +8,7 @@ const fieldComponents = VueFormGenerator.fieldComponents;
 const abstractField = VueFormGenerator.abstractField;
 
 const install = (Vue, options) => {
-    Vue.component("OriginalVueFormGenerator", VueFormGenerator.component);
+    Vue.component("VueFormGenerator", VueFormGenerator.component);
     if (options && options.validators) {
         for (let key in options.validators) {
             if ({}.hasOwnProperty.call(options.validators, key)) {
@@ -16,7 +16,7 @@ const install = (Vue, options) => {
             }
         }
     }
-    Vue.component("VueFormGenerator", MeteorVueFormGenerator);
+    //Vue.component("VueFormGenerator", MeteorVueFormGenerator);
 };
 
 export {

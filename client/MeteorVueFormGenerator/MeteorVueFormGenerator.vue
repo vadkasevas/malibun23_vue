@@ -88,8 +88,6 @@
                 if(this.subscriptions&&!_.isFunction(this.schema.subscribe))
                     return this.subscriptionsReady=true;
 
-                this.stopSubscriptions();
-
                 let subscriptions = [];
                 if(_.isFunction(this.schema.subscribe)){
                     subscriptions = this.schema.subscribe.apply(this,[this.model]);
@@ -99,8 +97,30 @@
                 if(!_.isArray(subscriptions)&&!_.isEmpty(subscriptions))
                     subscriptions=[subscriptions];
                 if(_.isEmpty(subscriptions)){
+                    this.stopSubscriptions();
                     return this.subscriptionsReady = true;
                 }
+
+                function subsHash(subscriptions){
+                    return _.map(subscriptions,(subscription)=>{
+                        let result = [];
+                        if(_.isArray(subscription)){
+                            result = subscription;
+                        }else{
+                            result.push(subscription.name);
+                            _.each(subscription.params,(param)=>{
+                                result.push(param);
+                            });
+                        }
+                        return JSON.stringify(result);
+                    }).join(' ');
+                }
+
+                if(this.subscriptions && subsHash(this.subscriptions)==subsHash(subscriptions)){
+                    return this.subscriptionsReady=true;
+                }
+
+                this.stopSubscriptions();
                 this.subscriptionsReady = false;
                 let promises = _.map(subscriptions,(subData)=>{
                     return new Promise((resolve)=>{
@@ -120,8 +140,10 @@
                     });
                 });
                 Promise.all(promises).then((subscriptions)=>{
-                    this.subscriptions = subscriptions;
-                    this.subscriptionsReady=true;
+                    setTimeout(()=>{
+                        this.subscriptions = subscriptions;
+                        this.subscriptionsReady=true;
+                    },1000);
                 });
             }
         }
