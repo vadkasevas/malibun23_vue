@@ -35,8 +35,9 @@
 </template>
 
 <script>
-  import VueFormGenerator from "vue-form-generator";
-  import Vue from "vue";
+  import * as VueFormGenerator from "../../../../lib/MeteorVueFormGenerator/index";
+  import {_} from 'meteor/underscore';
+  import { get as objGet, isFunction, isNil, isArray } from "lodash";
 
   export default {
     mixins: [VueFormGenerator.abstractField],
@@ -89,7 +90,46 @@
         }catch (e) {
           console.log(e);
         }
-      }
+      },
+
+        validate(isAsync = null) {
+            if (isAsync === null) {
+                isAsync = objGet(this.formOptions, "validateAsync", false);
+            }
+            this.clearValidationErrors();
+
+            let fields = [];
+            let results = [];
+
+            _.each(this.$children, child => {
+                if (isFunction(child.validate)) {
+                    fields.push(child.$refs.child); // keep track of validated children
+                    results.push(child.validate(true));
+                }
+            });
+
+            let handleErrors = errors => {
+                console.log({errors});
+                let formErrors = [];
+                _.each(errors, (err, i) => {
+                    if (isArray(err) && err.length > 0) {
+                        _.each(err, error => {
+                            formErrors.push(error.error);
+                        });
+                    }
+                });
+                this.errors = formErrors;
+                let isValid = formErrors.length === 0;
+                this.$emit("validated", isValid, formErrors, this);
+                return isAsync ? formErrors : isValid;
+            };
+
+            if (!isAsync) {
+                return handleErrors(results);
+            }
+
+            return Promise.all(results).then(handleErrors);
+        }
     }
   };
 </script>

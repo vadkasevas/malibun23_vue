@@ -3,7 +3,7 @@
 import {get,cloneDeep,set} from "lodash";
 import {_} from 'meteor/underscore';
 //@ts-ignore
-import {validators} from 'vue-form-generator';
+import {validators} from './MeteorVueFormGenerator/index';
 //@ts-ignore
 ///<reference path="../typings/meteor/malibun23:stack.d.ts"/>
 import {meteorAsync,MalibunCollection} from 'meteor/malibun23:stack';

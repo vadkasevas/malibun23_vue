@@ -1,16 +1,16 @@
 import 'bootstrap/dist/js/bootstrap.bundle';
 //@ts-ignore
 import Vue from 'vue';
+
 // @ts-ignore
 /// <reference path="./typings/vue-form-generator.d.ts" />
-import VueFormGenerator from "./client/MeteorVueFormGenerator/index";
+import * as VueFormGenerator from "./lib/MeteorVueFormGenerator/index";
 // @ts-ignore
-import { FieldArray } from 'vfg-field-array';
+import { FieldArray } from './client/vfg-field-array/index';
 
 //@ts-ignore
 import Autocomplete from './client/VueAutocomplete';
 Vue.component("fieldAutocomple", Autocomplete);
-
 
 Vue.use(VueFormGenerator);
 

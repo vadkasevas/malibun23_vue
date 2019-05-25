@@ -10,7 +10,6 @@ Npm.depends({
     "typescript": "3.3.4000",
     "vuetify": "1.5.7",
     "vue-property-decorator": "8.1.0",
-    "vue-form-generator": "2.3.4",
     "vfg-field-array": "0.0.1",
     "bootstrap": "4.3.1",
     "bootstrap-vue": "2.0.0-rc.15",
@@ -18,13 +17,16 @@ Npm.depends({
     "object-hash":"1.3.1",
     "async":"2.6.2",
     "lodash.isequal":"4.5.0",
-    "lodash":"4.17.11"
+    "lodash":"4.17.11",
+    "fecha":"3.0.3"
 });
 
 Package.onUse(function(api) {
     api.versionsFrom('1.8.0.1');
     api.use('meteor-base');
-    api.use('ecmascript');
+    api.use('ecmascript@0.12.4');
+    api.use('es5-shim');
+    api.use('babel-runtime');
     api.use('akryum:vue');
     api.use('akryum:vue-component');
     api.use('akryum:vue-pug');
