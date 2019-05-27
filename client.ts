@@ -13,7 +13,7 @@ import Autocomplete from './client/VueAutocomplete';
 Vue.component("fieldAutocomple", Autocomplete);
 
 Vue.use(VueFormGenerator);
-
+export {VueFormGenerator};
 import {VuetifyPagination} from './client/pagination/VuetifyPagination';
 export {VuetifyPagination};
 

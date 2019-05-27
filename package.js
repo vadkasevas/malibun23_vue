@@ -42,7 +42,8 @@ Package.onUse(function(api) {
     api.mainModule('server.ts', 'server');
     api.mainModule('client.ts', 'client');
     api.export(['DataProvider','VuetifyPagination','action','RouterConfig','VueController','VueAction','PageTitleMixin'
-    ,'MeteorComponent','CollectionTracker','ModelComponent','VueSchemaBuilder','VueValidationBuilder'],'client');
+    ,'MeteorComponent','CollectionTracker','ModelComponent','VueSchemaBuilder','VueValidationBuilder'
+        ,'VueFormGenerator'],'client');
 
     api.export(['VueSchema','VueSchemaBuilder','VueValidationBuilder'],'server');
 });

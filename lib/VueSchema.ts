@@ -25,6 +25,7 @@ interface ISchema {
 
 interface VueSchemaCtx {
     userId?:string;
+    parentModel?:object;
 }
 
 export class VueSchema{
@@ -38,6 +39,23 @@ export class VueSchema{
         this.schema=schema;
         this.errors = [];
         this.ctx = ctx;
+    }
+
+    genChildCtx(){
+        let result = {};
+        let userId = this.ctx.userId;
+        Object.defineProperty(result, 'userId', {
+            get: function() {
+                return userId;
+            }
+        });
+        let parentModel = this.model;
+        Object.defineProperty(result, 'parentModel', {
+            get: function() {
+                return parentModel;
+            }
+        });
+        return result;
     }
 
     validate(){
@@ -54,11 +72,11 @@ export class VueSchema{
             promises.push(this.validateProperty());
 
             if(this.isArray){
-                let arrayValidator = new VueSchema(this.model[this.schema.model],this.schema.items,this.ctx);
+                let arrayValidator = new VueSchema(this.model[this.schema.model],this.schema.items,this.genChildCtx());
                 promises.push(arrayValidator.validate());
             }
             if(this.isObject){
-                let objectValidator = new VueSchema(this.model[this.schema.model],this.schema.schema,this.ctx);
+                let objectValidator = new VueSchema(this.model[this.schema.model],this.schema.schema,this.genChildCtx());
                 promises.push(objectValidator.validate());
             }
         }
@@ -208,14 +226,27 @@ MalibunCollection.prototype['vueMethods'] =function(){
                 userId = Meteor.currentUserId(userId);
             }
 
+            function genCtx(){
+                let result = {};
+                Object.defineProperty(result, 'userId', {
+                    get: function() {
+                        return userId;
+                    }
+                });
+                Object.defineProperty(result, 'parentModel', {
+                    get: function() {
+                        return null;
+                    }
+                });
+                return result;
+            }
+
             var f = Meteor.wrapAsync(function(cb){
                 meteorAsync.seqNew([
                     function validate(h,cb){
                         if(!collection.vueSchema)
                             return cb(null,true);
-                        let schema = new VueSchema(doc,collection.vueSchema,{
-                            userId:userId
-                        });
+                        let schema = new VueSchema(doc,collection.vueSchema,genCtx());
                         schema.validate().then((errors)=>{
                             if(!_.isEmpty(errors)){
                                 let err = _.first(errors);
@@ -254,15 +285,27 @@ MalibunCollection.prototype['vueMethods'] =function(){
             if(Meteor['currentUserId']){
                 userId = Meteor.currentUserId(userId);
             }
+            function genCtx(){
+                let result = {};
+                Object.defineProperty(result, 'userId', {
+                    get: function() {
+                        return userId;
+                    }
+                });
+                Object.defineProperty(result, 'parentModel', {
+                    get: function() {
+                        return null;
+                    }
+                });
+                return result;
+            }
             let _id = doc._id;
             var f = Meteor.wrapAsync(function(cb){
                 meteorAsync.seqNew([
                     function validate(h,cb){
                         if(!collection.vueSchema)
                             return cb(null,true);
-                        let schema = new VueSchema(doc,collection.vueSchema,{
-                            userId:userId
-                        });
+                        let schema = new VueSchema(doc,collection.vueSchema,genCtx());
                         schema.validate().then((errors)=>{
                             if(!_.isEmpty(errors)){
                                 let err = _.first(errors);
