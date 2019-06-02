@@ -144,7 +144,7 @@
                     setTimeout(()=>{
                         this.subscriptions = subscriptions;
                         this.subscriptionsReady=true;
-                    },1000);
+                    },0);
                 });
             }
         }

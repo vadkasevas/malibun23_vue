@@ -24,8 +24,8 @@ interface ISchema {
 }
 
 interface VueSchemaCtx {
-    userId?:string;
-    parentModel?:object;
+    $userId?:string;
+    $parentModel?:object;
 }
 
 export class VueSchema{
@@ -43,16 +43,16 @@ export class VueSchema{
 
     genChildCtx(){
         let result = {};
-        let userId = this.ctx.userId;
-        Object.defineProperty(result, 'userId', {
+        let $userId = this.ctx.$userId;
+        Object.defineProperty(result, '$userId', {
             get: function() {
-                return userId;
+                return $userId;
             }
         });
-        let parentModel = this.model;
-        Object.defineProperty(result, 'parentModel', {
+        let $parentModel = this.model;
+        Object.defineProperty(result, '$parentModel', {
             get: function() {
-                return parentModel;
+                return $parentModel;
             }
         });
         return result;
@@ -184,19 +184,32 @@ export class VueSchema{
         }
 
         _.each(validators, validator => {
-            let result = validator.apply(this.ctx,[this.value, this.schema, this.model]);
-            if (result && _.isFunction(result.then)) {
+            let field = this.schema;
+            let errs = validator.apply(this.ctx,[this.value, field, this.model]);
+            function cathErrors(errs){
+                if(!_.isEmpty(errs)){
+                    let result = _.chain(errs)
+                        .map((err)=>{
+                            return {
+                                error:err,
+                                field:field
+                            }
+                        })
+                        .value();
+                    return result;
+                }
+            }
+            if (errs && _.isFunction(errs.then)) {
                 results.push(
-                    result.then(err => {
-                        if (err) {
-                            this.errors = this.errors.concat(err);
+                    errs.then(errs => {
+                        if (errs) {
+                            this.errors = this.errors.concat(cathErrors(errs));
                         }
                         return this.errors;
                     })
-
                 );
-            } else if (result) {
-                results = results.concat(result);
+            } else if (errs) {
+                results = results.concat(cathErrors(errs));
             }
         });
 
@@ -221,19 +234,19 @@ MalibunCollection.prototype['vueMethods'] =function(){
     let collection:MalibunCollection<any>=this;
     Meteor.methods({
         [`vue${this._name}Insert`]:function(doc){
-            let userId = Meteor.userId();
+            let $userId = Meteor.userId();
             if(Meteor['currentUserId']){
-                userId = Meteor.currentUserId(userId);
+                $userId = Meteor.currentUserId($userId);
             }
 
             function genCtx(){
                 let result = {};
-                Object.defineProperty(result, 'userId', {
+                Object.defineProperty(result, '$userId', {
                     get: function() {
-                        return userId;
+                        return $userId;
                     }
                 });
-                Object.defineProperty(result, 'parentModel', {
+                Object.defineProperty(result, '$parentModel', {
                     get: function() {
                         return null;
                     }
@@ -250,9 +263,9 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         schema.validate().then((errors)=>{
                             if(!_.isEmpty(errors)){
                                 let err = _.first(errors);
-                                if(_.isString(err)){
-                                    err = new Meteor.Error(err);
-                                }
+                                console.log(err);
+                                //@ts-ignore
+                                err = new Meteor.Error(err.error,err.error,err.field&&err.field.model?err.field.model:JSON.stringify(err.field));
                                 return cb(err);
                             }
                             cb(null,true);
@@ -263,7 +276,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                     function checkPermissions(h,cb){
                         if(!collection.permissions )
                             return cb(null,true);
-                        let check = collection.permissions.checkInsert(userId,doc);
+                        let check = collection.permissions.checkInsert($userId,doc);
                         if(!check){
                             return cb(new Meteor.Error('Недостаточно прав'));
                         }
@@ -281,18 +294,18 @@ MalibunCollection.prototype['vueMethods'] =function(){
 
         },
         [`vue${this._name}Update`]:function(doc){
-            let userId = Meteor.userId();
+            let $userId = Meteor.userId();
             if(Meteor['currentUserId']){
-                userId = Meteor.currentUserId(userId);
+                $userId = Meteor.currentUserId($userId);
             }
             function genCtx(){
                 let result = {};
-                Object.defineProperty(result, 'userId', {
+                Object.defineProperty(result, '$userId', {
                     get: function() {
-                        return userId;
+                        return $userId;
                     }
                 });
-                Object.defineProperty(result, 'parentModel', {
+                Object.defineProperty(result, '$parentModel', {
                     get: function() {
                         return null;
                     }
@@ -309,9 +322,9 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         schema.validate().then((errors)=>{
                             if(!_.isEmpty(errors)){
                                 let err = _.first(errors);
-                                if(_.isString(err)){
-                                    err = new Meteor.Error(err);
-                                }
+                                console.log(err);
+                                //@ts-ignore
+                                err = new Meteor.Error(err.error,err.error,err.field&&err.field.model?err.field.model:JSON.stringify(err.field));
                                 return cb(err);
                             }
                             cb(null,true);
@@ -324,7 +337,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         if(!collection.permissions )
                             return cb(null,true);
                         let model=collection.findOne(_id);
-                        let check = collection.permissions.checkUpdate(userId,model,{$set:doc});
+                        let check = collection.permissions.checkUpdate($userId,model,{$set:doc});
                         if(!check){
                             return cb(new Meteor.Error('Недостаточно прав'));
                         }

@@ -34,7 +34,7 @@ export default {
                 if(!oldValue){
                     if(!_.isEmpty(newValue)) {
                         let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
-                        let collection = Meteor.connection._stores['uploadFiles']._getCollection();
+                        let collection = Meteor.connection._stores[collectionName]._getCollection();
                         Meteor.subscribe(collectionName,{_id:{$in:newValue}},()=>{
                             let files = collection.find({_id:{$in:this.value}}).fetch();
                             this.items = _.map(files,(file)=>{

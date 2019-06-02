@@ -70,16 +70,7 @@ export class VueValidationBuilder {
 
     userId():this{
         this.validators.push(function(value,field,model){
-            let userId = null;
-            if(Meteor.isClient){
-                userId = Meteor.currentUserId?Meteor.currentUserId():Meteor.userId();
-            }else{
-                userId = this.userId;
-            }
-            if(value!=userId){
-                return ['Недопустимое значение'];
-            }
-            return [];
+            return (!value||value != this.$userId)?['Недопустимое значение']:[];
         });
         return this;
     }
