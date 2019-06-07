@@ -85,7 +85,7 @@ export class VueSchemaBuilder{
         }
 
 
-        schemaOptions['type'] = 'autocomple';
+        schemaOptions['type'] = 'autocomplete';
         schemaOptions['multiple'] = !!multiple;
         schemaOptions['methodName'] = methodName;
         return schemaOptions;

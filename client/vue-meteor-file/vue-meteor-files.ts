@@ -22,8 +22,8 @@ class FileItem{
 export default {
     data(){
         return{
-            subscribed:false,
-            items:[]
+            items:[],
+            subscription:null
         };
     },
 
@@ -35,14 +35,13 @@ export default {
                     if(!_.isEmpty(newValue)) {
                         let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
                         let collection = Meteor.connection._stores[collectionName]._getCollection();
-                        Meteor.subscribe(collectionName,{_id:{$in:newValue}},()=>{
+                        this.subscription = Meteor.subscribe(collectionName,{_id:{$in:newValue}},()=>{
                             let files = collection.find({_id:{$in:this.value}}).fetch();
                             this.items = _.map(files,(file)=>{
                                 let item = new FileItem();
                                 item.file = file;
                                 return item;
                             });
-                            this.subscribed = true;
                         });
                     }
                 }
@@ -65,6 +64,11 @@ export default {
         this.$nextTick(function () {
 
         });
+    },
+
+    destroyed(){
+        if(this.subscription)
+            this.subscription.stop();
     },
 
     methods:{

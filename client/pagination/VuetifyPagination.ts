@@ -95,7 +95,7 @@ export class VuetifyPagination extends Vue{
 
     onChange(){
         let dataProvider = this.dataProvider;
-        let selector = this.selector;
+        let selector = EJSON.parse( EJSON.stringify(this.selector));
         if(!dataProvider||dataProvider.pageSize!=this.pageSize
             ||this.currentPage<dataProvider.fromPage
             ||this.currentPage>dataProvider.toPage

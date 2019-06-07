@@ -8,9 +8,7 @@ import * as VueFormGenerator from "./lib/MeteorVueFormGenerator/index";
 // @ts-ignore
 import { FieldArray } from './client/vfg-field-array/index';
 
-//@ts-ignore
-import Autocomplete from './client/VueAutocomplete';
-Vue.component("fieldAutocomple", Autocomplete);
+
 
 Vue.use(VueFormGenerator);
 export {VueFormGenerator};
@@ -43,3 +41,7 @@ export {VueSchemaBuilder};
 
 import {VueValidationBuilder} from "./lib/VueValidationBuilder";
 export  {VueValidationBuilder};
+
+//@ts-ignore
+import Autocomplete from './client/Autocomplete2';
+Vue.component("fieldAutocomplete", Autocomplete);
