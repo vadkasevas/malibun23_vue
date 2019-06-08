@@ -1,14 +1,36 @@
 import { abstractField } from "vue-form-generator";
 import {_} from 'meteor/underscore';
+import {Meteor} from "meteor/meteor";
 
 export default {
     data(){
         return{
             currentUpload:null,
+            subscription:null,
             file:null
         };
     },
 
+    watch:{
+        value:{
+            immediate:true,
+            handler(newValue,oldValue){
+                if(this.subscription)
+                    this.subscription.stop();
+                if( newValue ){
+                    let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
+                    let collection = Meteor.connection._stores[collectionName]._getCollection();
+                    this.subscription = Meteor.subscribe(collectionName,{_id:newValue},()=>{
+                        this.file = collection.findOne({_id:newValue});
+                    });
+                }
+            }
+        }
+    },
+    destroyed(){
+        if(this.subscription)
+            this.subscription.stop();
+    },
     computed:{
         accept(){
             if(_.isEmpty(this.schema.accept))
@@ -50,7 +72,7 @@ export default {
                         meta = schema.meta;
                     }
                 }
-                var upload = this.schema.collection.insert({
+                let upload = this.schema.collection.insert({
                     file: $event.target.files[0],
                     streams: 'dynamic',
                     chunkSize: 'dynamic',
