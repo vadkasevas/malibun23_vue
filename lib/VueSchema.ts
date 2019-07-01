@@ -283,9 +283,27 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         cb(null,true);
                     },
 
+                    function beforeHooks(h,cb){
+                        if(collection.vueSchema.before&&collection.vueSchema.before.save){
+                            collection.vueSchema.before.save.apply(genCtx(),[doc]);
+                        }
+                        if(collection.vueSchema.before&&collection.vueSchema.before.insert){
+                            collection.vueSchema.before.insert.apply(genCtx(),[doc]);
+                        }
+                        cb();
+                    },
                     function insert(h,cb){
                         collection.insert(doc,cb);
-                    }
+                    },
+                    function afterHooks(h,cb){
+                        if(collection.vueSchema.after&&collection.vueSchema.after.save){
+                            collection.vueSchema.before.save.apply(genCtx(),[h.insert,doc]);
+                        }
+                        if(collection.vueSchema.before&&collection.vueSchema.after.insert){
+                            collection.vueSchema.before.insert.apply(genCtx(),[h.insert,doc]);
+                        }
+                        cb();
+                    },
                 ]).finally((err,h)=>{
                     return cb(err,h.insert);
                 });
@@ -344,9 +362,29 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         cb(null,true);
                     },
 
+                    function beforeHooks(h,cb){
+                        if(collection.vueSchema.before&&collection.vueSchema.before.save){
+                            collection.vueSchema.before.save.apply(genCtx(),[doc]);
+                        }
+                        if(collection.vueSchema.before&&collection.vueSchema.before.update){
+                            collection.vueSchema.before.insert.apply(genCtx(),[doc]);
+                        }
+                        cb();
+                    },
+
                     function update(h,cb){
                         collection.update({_id:_id},{$set:doc},cb);
-                    }
+                    },
+
+                    function afterHooks(h,cb){
+                        if(collection.vueSchema.after&&collection.vueSchema.after.save){
+                            collection.vueSchema.after.save.apply(genCtx(),[doc]);
+                        }
+                        if(collection.vueSchema.after&&collection.vueSchema.after.update){
+                            collection.vueSchema.after.update.apply(genCtx(),[doc]);
+                        }
+                        cb();
+                    },
                 ]).finally((err,h)=>{
                     return cb(err,h.update);
                 });

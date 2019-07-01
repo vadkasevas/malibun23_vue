@@ -49,9 +49,9 @@
       "integrity": "sha1-p9BVi9icQveV3UIyj3QIMcpTvCU="
     },
     "consola": {
-      "version": "2.6.2",
-      "resolved": "https://registry.npmjs.org/consola/-/consola-2.6.2.tgz",
-      "integrity": "sha512-GNJhwvF4bJ8eiAlyB8r4WNM8kBqkl+y4DvMehMbyywoJiv37N0M6/xrKqrrZw/5maZA+UagQV8UZ+XBeuGMzUg=="
+      "version": "2.7.1",
+      "resolved": "https://registry.npmjs.org/consola/-/consola-2.7.1.tgz",
+      "integrity": "sha512-u7JYs+HnMbZPD2cEuS1XHsLeqtazA0kd5lAk8r8DnnGdgNhOdb7DSubJ+QLdQkbtpmmxgp7gs8Ug44sCyY4FCQ=="
     },
     "escape-string-regexp": {
       "version": "1.0.5",
