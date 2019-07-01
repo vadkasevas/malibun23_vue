@@ -254,7 +254,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                 return result;
             }
 
-            var f = Meteor.wrapAsync(function(cb){
+            let f = Meteor.wrapAsync(function(cb){
                 meteorAsync.seqNew([
                     function validate(h,cb){
                         if(!collection.vueSchema)
@@ -331,7 +331,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                 return result;
             }
             let _id = doc._id;
-            var f = Meteor.wrapAsync(function(cb){
+            let f = Meteor.wrapAsync(function(cb){
                 meteorAsync.seqNew([
                     function validate(h,cb){
                         if(!collection.vueSchema)
@@ -392,4 +392,4 @@ MalibunCollection.prototype['vueMethods'] =function(){
             return f();
         },
     })
-}
+};

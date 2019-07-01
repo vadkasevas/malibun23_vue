@@ -31,19 +31,17 @@ export default {
         value:{
             immediate:true,
             handler(newValue,oldValue){
-                if(!oldValue){
-                    if(!_.isEmpty(newValue)) {
-                        let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
-                        let collection = Meteor.connection._stores[collectionName]._getCollection();
-                        this.subscription = Meteor.subscribe(collectionName,{_id:{$in:newValue}},()=>{
-                            let files = collection.find({_id:{$in:this.value}}).fetch();
-                            this.items = _.map(files,(file)=>{
-                                let item = new FileItem();
-                                item.file = file;
-                                return item;
-                            });
+                if( _.isEmpty(oldValue) && !_.isEmpty(newValue) ){
+                    let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
+                    let collection = Meteor.connection._stores[collectionName]._getCollection();
+                    this.subscription = Meteor.subscribe(collectionName,{_id:{$in:newValue}},()=>{
+                        let files = collection.find({_id:{$in:this.value}}).fetch();
+                        this.items = _.map(files,(file)=>{
+                            let item = new FileItem();
+                            item.file = file;
+                            return item;
                         });
-                    }
+                    });
                 }
             }
         }
