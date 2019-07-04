@@ -297,10 +297,10 @@ MalibunCollection.prototype['vueMethods'] =function(){
                     },
                     function afterHooks(h,cb){
                         if(collection.vueSchema.after&&collection.vueSchema.after.save){
-                            collection.vueSchema.before.save.apply(genCtx(),[h.insert,doc]);
+                            collection.vueSchema.after.save.apply(genCtx(),[h.insert,doc]);
                         }
-                        if(collection.vueSchema.before&&collection.vueSchema.after.insert){
-                            collection.vueSchema.before.insert.apply(genCtx(),[h.insert,doc]);
+                        if(collection.vueSchema.after&&collection.vueSchema.after.insert){
+                            collection.vueSchema.after.insert.apply(genCtx(),[h.insert,doc]);
                         }
                         cb();
                     },

@@ -75,6 +75,11 @@ export class VuetifyPagination extends Vue{
     @Prop({required: true})
     readonly headers:{}[];
 
+    @Watch('initSelector')
+    onInitSelectorChange(){
+        this.onChange();
+    }
+
     @Watch('pagination',{deep: true })
     onPaginationChange($pagination){
         this.onChange();
