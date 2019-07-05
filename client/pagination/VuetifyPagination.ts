@@ -4,6 +4,8 @@ import ru from 'vuetify/es5/locale/ru'
 //import async from 'async';
 import async = require("async")
 import hashMaker from 'object-hash';
+import {Meteor} from "meteor/meteor";
+
 import colors from 'vuetify/es5/util/colors'
 Vue.use(Vuetify, {
     lang: {
@@ -51,7 +53,7 @@ export class VuetifyPagination extends Vue{
     @Prop({ default: 10 })
     initialPageSize:number;
 
-    @Prop({required: true}) readonly collection:MalibunCollection<any>;
+    @Prop({required: true}) readonly collection:any;
     @Prop({default:()=>{return {} }}) readonly initSelector:{};
     @Prop({default:()=>{return {} }}) readonly initSelectorOptions:{};
     @Prop({default:()=>{return [] }}) readonly searchFields:string[];
@@ -71,6 +73,7 @@ export class VuetifyPagination extends Vue{
         selector:null
     };
     countProvider:DataCountProvider=null;
+    userSelector:null;
 
     @Prop({required: true})
     readonly headers:{}[];
@@ -126,8 +129,9 @@ export class VuetifyPagination extends Vue{
                     if(this.countProvider){
                         return cb();
                     }
-
-                    this.countProvider = new DataCountProvider(this.collection);
+                    let collectionName = _.isString(this.collection)?this.collection:this.collection._name;
+                    let collection = Meteor['connection']._stores[collectionName]._getCollection();
+                    this.countProvider = new DataCountProvider(collection);
                     this.countProvider.subscribe(selector);
                     this.countProvider['hash'] = hashMaker(selector);
                     this.countProvider.autorun((count)=>{
@@ -145,8 +149,10 @@ export class VuetifyPagination extends Vue{
 
         }else{
             let start = (this.currentPage-this.dataProvider.fromPage) * this.pageSize;
+            console.log(`start (${start}) = (${this.currentPage}-${this.dataProvider.fromPage}) * ${this.pageSize};`)
             let end = start + this.pageSize;
             this.models = this.dataProvider.models.slice(start,end);
+            console.log(`this.models (${this.models.length}) = this.dataProvider.models.slice(start${start},end(${end}));`)
         }
     }
 
@@ -155,10 +161,16 @@ export class VuetifyPagination extends Vue{
             return !!header['search'];
         });
     }
+
     get selector(){
         let $and = [],$or = [];
         if(!_.isEmpty(this.initSelector)){
-            $and.push(JSON.parse(JSON.stringify(this.initSelector)));
+            console.log('this.initSelector:',this.initSelector);
+            $and.push(EJSON.clone(this.initSelector));
+        }
+        if(!_.isEmpty(this.userSelector)){
+            console.log('this.userSelector:',this.userSelector);
+            $and.push(EJSON.clone(this.userSelector));
         }
         let search = this.search?String(this.search):'';
         if(search&&this.hasSearchFields){
@@ -196,7 +208,7 @@ export class VuetifyPagination extends Vue{
         return this.pagination.page;
     }
     get pageSize(){
-        return this.pagination.rowsPerPage;
+        return Number( this.pagination.rowsPerPage );
     }
     get items() {
         return this.models;
@@ -223,7 +235,10 @@ export class VuetifyPagination extends Vue{
         selectOptions['skip'] = (fromPage - 1) * this.pageSize;//11-10 = 10???
         if (selectOptions['skip'] < 0)
             selectOptions['skip'] = 0;
-        let dataProvider = new PaginationDataProvider(this.collection);
+        let collectionName = _.isString(this.collection)?this.collection:this.collection._name;
+        let collection = Meteor['connection']._stores[collectionName]._getCollection();
+
+        let dataProvider = new PaginationDataProvider(collection);
 
         dataProvider.subscribe (this.selector, selectOptions);
         dataProvider['fromPage'] = fromPage;//2
@@ -235,10 +250,10 @@ export class VuetifyPagination extends Vue{
             let start = (this.currentPage-this.dataProvider.fromPage) * this.pageSize;//3-2
             let end = start + this.pageSize;
             let models = _.sortBy(this.dataProvider.models,(model)=>{
-                    if(!this.pagination.sortBy)
-                        return 0;
-                    return model[this.pagination.sortBy];
-                });
+                if(!this.pagination.sortBy)
+                    return 0;
+                return model[this.pagination.sortBy];
+            });
             if(this.pagination.descending){
                 models = models.reverse();
             }
