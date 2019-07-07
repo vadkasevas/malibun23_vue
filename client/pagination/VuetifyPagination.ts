@@ -1,11 +1,16 @@
+// @ts-ignore
 import Vuetify from 'vuetify'
 import Vue from 'vue';
+// @ts-ignore
 import ru from 'vuetify/es5/locale/ru'
 //import async from 'async';
+// @ts-ignore
 import async = require("async")
+// @ts-ignore
 import hashMaker from 'object-hash';
 import {Meteor} from "meteor/meteor";
 
+// @ts-ignore
 import colors from 'vuetify/es5/util/colors'
 Vue.use(Vuetify, {
     lang: {
@@ -17,11 +22,14 @@ Vue.use(Vuetify, {
 
 import {MalibunCollection, MalibunModel} from 'meteor/malibun23:stack';
 import {DataProvider} from "../../lib/DataProvider";
+// @ts-ignore
 import { EJSON } from 'meteor/ejson'
 import {DataCountProvider} from "../../lib/DataCountProvider";
+// @ts-ignore
 import {_} from 'meteor/underscore';
 import 'vuetify/dist/vuetify.min.css'//TODO
 //import './materialIncons.css';
+// @ts-ignore
 import {Component,Prop,Watch} from 'vue-property-decorator'
 
 

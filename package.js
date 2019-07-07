@@ -18,7 +18,10 @@ Npm.depends({
     "async":"2.6.2",
     "lodash.isequal":"4.5.0",
     "lodash":"4.17.11",
-    "fecha":"3.0.3"
+    "fecha":"3.0.3",
+    "jsdom":"15.1.1",
+    "jQuery-QueryBuilder":"2.5.2",
+    "normalize.css":"8.0.1"
 });
 
 Package.onUse(function(api) {

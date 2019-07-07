@@ -16,6 +16,13 @@ declare module 'meteor/meteor' {
         export function isCompany():Boolean;
         export function currentUserId(userId?:string):string;
         export function currentUser(userId?:string):Meteor.User;
+
+        export function subscribe(collectionName: any | MalibunCollection<T> | MalibunCollection<T> | MalibunCollection<T> | Mongo.Collection<any> | Mongo.Collection<FileObj>, param2: {_id: any}, param3: () => void);
+        export function userId();
+
+        export function wrapAsync(param: (cb) => void);
+
+        export function methods(param: { [p: string]: ((doc) => any) | ((doc) => any) });
     }
 }
 

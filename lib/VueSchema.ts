@@ -1,6 +1,7 @@
 ///<reference path="../typings/meteor/meteor.d.ts"/>
 
 import {get,cloneDeep,set} from "lodash";
+// @ts-ignore
 import {_} from 'meteor/underscore';
 //@ts-ignore
 import {validators} from './MeteorVueFormGenerator/index';
@@ -278,6 +279,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                             return cb(null,true);
                         let check = collection.permissions.checkInsert($userId,doc);
                         if(!check){
+                            // @ts-ignore
                             return cb(new Meteor.Error('Недостаточно прав'));
                         }
                         cb(null,true);
@@ -357,6 +359,7 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         let model=collection.findOne(_id);
                         let check = collection.permissions.checkUpdate($userId,model,{$set:doc});
                         if(!check){
+                            // @ts-ignore
                             return cb(new Meteor.Error('Недостаточно прав'));
                         }
                         cb(null,true);

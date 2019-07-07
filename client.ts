@@ -1,4 +1,5 @@
 import 'bootstrap/dist/js/bootstrap.bundle';
+import 'bootstrap/dist/css/bootstrap.min.css';
 //@ts-ignore
 import Vue from 'vue';
 
@@ -45,3 +46,8 @@ export  {VueValidationBuilder};
 //@ts-ignore
 import Autocomplete from './client/Autocomplete2';
 Vue.component("fieldAutocomplete", Autocomplete);
+
+// @ts-ignore
+import QueryBuilder from './lib/querybuilder/QueryBuilder';
+Vue.component("fieldQueryBuilder", QueryBuilder);
+export {QueryBuilder};
