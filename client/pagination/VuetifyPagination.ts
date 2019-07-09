@@ -262,9 +262,9 @@ export class VuetifyPagination extends Vue{
                     return 0;
                 return model[this.pagination.sortBy];
             });
-            if(this.pagination.descending){
+            /*if(this.pagination.descending){
                 models = models.reverse();
-            }
+            }*/
             this.models = models.slice(start,end);
         });
         return dataProvider;
