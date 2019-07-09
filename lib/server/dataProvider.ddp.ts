@@ -1,8 +1,7 @@
 /// <reference path="../../typings/meteor/raix:eventddp.d.ts" />
 /// <reference path="../../typings/meteor/malibun23:stack.d.ts" />
-
 import {EventDDP} from 'meteor/raix:eventddp';
-
+import { EJSON } from 'meteor/ejson'
 import {generateRandomHash, MalibunCollection,md5} from "meteor/malibun23:stack";
 import {_} from 'meteor/underscore';
 import {Meteor} from 'meteor/meteor';
@@ -17,7 +16,7 @@ Meteor.publish('dataStream',function(channel,collectionName, condition, options)
     if(!options.sort){
         options.sort = {text:1};
     }
-    console.log(collectionName,condition,options);
+    console.log(collectionName,EJSON.stringify(condition),options);
     //@ts-ignore
     let observer = collection.publishCursor( Meteor.currentUser(this.userId), condition, options ).observeChanges({
         added(id,fields){

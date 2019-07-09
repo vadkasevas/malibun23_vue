@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {_} from 'meteor/underscore';
-import { abstractField } from "vue-form-generator";
+import { abstractField } from "../lib/vue-form-generator/main";
 
 export default {
     name:'form-autocomplete',

@@ -1,4 +1,4 @@
-import { abstractField } from "vue-form-generator";
+import { abstractField } from "../../lib/vue-form-generator/main";
 // @ts-ignore
 import {_} from 'meteor/underscore';
 import {Meteor} from "meteor/meteor";

@@ -25,7 +25,7 @@ vue-loading(v-else)
             box-sizing: border-box;
         }
 
-        .form-control {
+        .form-control{
             // Default Bootstrap .form-control style
             display: block;
             &:not([class*=" col-"]) {
@@ -43,7 +43,7 @@ vue-loading(v-else)
             transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
         } // .form-control
 
-        span.help {
+        span.help{
             margin-left: 0.3em;
             position: relative;
 
@@ -106,8 +106,7 @@ vue-loading(v-else)
                 margin-left: 4px;
             }
 
-            button,
-            input[type="submit"] {
+            button,input[type="submit"] {
                 // Default Bootstrap button style
                 display: inline-block;
                 padding: 6px 12px;

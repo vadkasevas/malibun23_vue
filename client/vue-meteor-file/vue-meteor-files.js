@@ -1,14 +1,14 @@
-import { abstractField } from "vue-form-generator";
+import { abstractField } from "../../lib/vue-form-generator/main";
 import {_} from 'meteor/underscore';
 import {generateRandomHash} from "meteor/malibun23:stack";
 import {cloneDeep} from 'lodash';
 import {Meteor} from "meteor/meteor";
 
 class FileItem{
-    file:object=null;
-    upload:any=null;
-    _id:string=generateRandomHash();
-    progress:number=0;
+    file=null;
+    upload=null;
+    _id=generateRandomHash();
+    progress=0;
 
     constructor(){
 
@@ -72,7 +72,7 @@ export default {
     methods:{
         removeItem(index){
             let removed = this.items.splice(index, 1);
-            _.each(removed,(item:FileItem)=>{
+            _.each(removed,(item)=>{
                 this.value = _.filter(this.value,(file_id)=>{
                     return !item.file||file_id!=item.file['_id'];
                 });
@@ -89,7 +89,7 @@ export default {
             let collectionName = _.isString(this.schema.collection)? this.schema.collection:this.schema.collection.collectionName;
             let collection = Meteor.connection._stores[collectionName]._getCollection().filesCollection;
 
-            _.each($event.target.files,($file:any,index)=>{
+            _.each($event.target.files,($file,index)=>{
                 if($file['size']==0)
                     return;
                 let item = new FileItem();

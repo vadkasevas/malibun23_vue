@@ -10,7 +10,6 @@ Npm.depends({
     "typescript": "3.3.4000",
     "vuetify": "1.5.7",
     "vue-property-decorator": "8.1.0",
-    "vfg-field-array": "0.0.1",
     "bootstrap": "4.3.1",
     "bootstrap-vue": "2.0.0-rc.15",
     "jquery": "3.3.1",
@@ -21,7 +20,12 @@ Npm.depends({
     "fecha":"3.0.3",
     "jsdom":"15.1.1",
     "jQuery-QueryBuilder":"2.5.2",
-    "normalize.css":"8.0.1"
+    "normalize.css":"8.0.1",
+    "lodash.isfunction":"3.0.9",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.foreach": "4.5.0",
+    "lodash.isarray": "4.0.0",
+    "lodash.isstring": "4.0.1"
 });
 
 Package.onUse(function(api) {

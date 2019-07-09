@@ -1,5 +1,3 @@
-import 'bootstrap/dist/js/bootstrap.bundle';
-import 'bootstrap/dist/css/bootstrap.min.css';
 //@ts-ignore
 import Vue from 'vue';
 
@@ -51,3 +49,9 @@ Vue.component("fieldAutocomplete", Autocomplete);
 import QueryBuilder from './lib/querybuilder/QueryBuilder';
 Vue.component("fieldQueryBuilder", QueryBuilder);
 export {QueryBuilder};
+
+
+
+
+import 'bootstrap/dist/js/bootstrap.bundle';
+import 'bootstrap/dist/css/bootstrap.min.css';

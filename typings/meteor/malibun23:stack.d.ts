@@ -99,7 +99,7 @@ declare module 'meteor/malibun23:stack' {
     export class MalibunModel<T> {
         _id?: string;
         collection?: MalibunCollection<T>;
-
+        constructor(rawDoc:any);
         update(update: string[] | T | string | object): number;
 
         remove(): number;
