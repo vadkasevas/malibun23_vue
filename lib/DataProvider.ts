@@ -11,11 +11,13 @@ export class DataProvider<T>  extends EventEmitter{
     changeQueued:boolean = false;
     modelsMap:object={};
     eventDdp:EventDdp=null;
-    subscriptionName:string='dataStream';
+    eventDdpSubscriptionName:string='dataStream';
+    meteorSubscriptionName:string;
 
-    constructor(collection:MalibunCollection<T>){
+    constructor(collection:MalibunCollection<T>,meteorSubscriptionName:string|null){
         super();
         this.collection = collection;
+        this.meteorSubscriptionName = meteorSubscriptionName||collection._name;
         this.subscription=null;
         this.isReady = false;
         this.once('ready',()=>{
@@ -39,8 +41,8 @@ export class DataProvider<T>  extends EventEmitter{
 
     subscribe(selector:Mongo.Selector<T>,options?:{sort?:{};skip?: number;limit?: number;fields?:{}}):this{
         this.eventDdp = new EventDdp();
-        this.eventDdp.subscriptionName = this.subscriptionName;
-        this.eventDdp.subscribe(this.collection._name,selector,options,{
+        this.eventDdp.subscriptionName = this.eventDdpSubscriptionName;
+        this.eventDdp.subscribe(this.meteorSubscriptionName,selector,options,{
             onReady: ()=>{
                 this.emit('ready');
             }

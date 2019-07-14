@@ -71,6 +71,8 @@ export class VuetifyPagination extends Vue{
     totalCount:number=0;
     dataProvider:PaginationDataProvider=null;
     search:string='';
+    subscriptionName:string='';
+
     pagination:IPagination={
         descending: true,
         page: 1,
@@ -227,6 +229,7 @@ export class VuetifyPagination extends Vue{
             this.onChange();
         })
     }
+
     createDataProvider(){
         let currentPage = this.currentPage;//3
         let cachedPages = 10;
@@ -246,7 +249,7 @@ export class VuetifyPagination extends Vue{
         let collectionName = _.isString(this.collection)?this.collection:this.collection._name;
         let collection = Meteor['connection']._stores[collectionName]._getCollection();
 
-        let dataProvider = new PaginationDataProvider(collection);
+        let dataProvider = new PaginationDataProvider(collection,this.subscriptionName||collectionName);
 
         dataProvider.subscribe (this.selector, selectOptions);
         dataProvider['fromPage'] = fromPage;//2
