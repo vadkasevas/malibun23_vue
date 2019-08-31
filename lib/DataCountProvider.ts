@@ -1,11 +1,12 @@
 import {DataProvider} from "./DataProvider";
 import {MalibunCollection, MalibunModel} from 'meteor/malibun23:stack';
 import {_} from 'meteor/underscore';
+import {EventDdp} from "./EventDdp/EventDdp.client";
 
 export class DataCountProvider extends DataProvider<any>{
     constructor(collection:MalibunCollection<any>){
-        super(collection);
-        this.subscriptionName = 'dataProviderCount';
+        super(collection,collection._name);
+        this.eventDdpSubscriptionName='dataProviderCount';
     }
 
     get count():number{

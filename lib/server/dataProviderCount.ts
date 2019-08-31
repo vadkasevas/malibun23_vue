@@ -4,7 +4,7 @@ import {MalibunCollection} from "meteor/malibun23:stack";
 import {_} from 'meteor/underscore';
 
 Meteor.publish('dataProviderCount',function(channel,collectionName, condition, options){
-    console.log({condition});
+    console.log('dataProviderCount:','channel:',channel,'collectionName:',collectionName,'condition:',condition,'options:',options);
     let collection = MalibunCollection.byName(collectionName);
     if(!collection)
         throw new Meteor.Error('collection-not-found', "Can't find my collection");

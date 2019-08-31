@@ -236,7 +236,11 @@ MalibunCollection.prototype['vueMethods'] =function(){
     Meteor.methods({
         [`vue${this._name}Insert`]:function(doc){
             let $userId = Meteor.userId();
-            if(Meteor['currentUserId']){
+            let extendedCustomContext = {
+                userId:$userId,
+                isFromTrustedCode:false
+            };
+            if(Meteor['currentUserId']&&$userId){
                 $userId = Meteor.currentUserId($userId);
             }
 
@@ -295,7 +299,9 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         cb();
                     },
                     function insert(h,cb){
-                        collection.insert(doc,cb);
+                        collection.insert(doc,{
+                            extendedCustomContext
+                        },cb);
                     },
                     function afterHooks(h,cb){
                         if(collection.vueSchema.after&&collection.vueSchema.after.save){
@@ -315,7 +321,11 @@ MalibunCollection.prototype['vueMethods'] =function(){
         },
         [`vue${this._name}Update`]:function(doc){
             let $userId = Meteor.userId();
-            if(Meteor['currentUserId']){
+            let extendedCustomContext = {
+                userId:$userId,
+                isFromTrustedCode:false
+            };
+            if(Meteor['currentUserId']&&$userId){
                 $userId = Meteor.currentUserId($userId);
             }
             function genCtx(){
@@ -335,6 +345,9 @@ MalibunCollection.prototype['vueMethods'] =function(){
             let _id = doc._id;
             let f = Meteor.wrapAsync(function(cb){
                 meteorAsync.seqNew([
+                    function checkId(h,cb){
+                        return cb(_id?null:new Error('Документ должен иметь ID'));
+                    },
                     function validate(h,cb){
                         if(!collection.vueSchema)
                             return cb(null,true);
@@ -370,13 +383,13 @@ MalibunCollection.prototype['vueMethods'] =function(){
                             collection.vueSchema.before.save.apply(genCtx(),[doc]);
                         }
                         if(collection.vueSchema.before&&collection.vueSchema.before.update){
-                            collection.vueSchema.before.insert.apply(genCtx(),[doc]);
+                            collection.vueSchema.before.update.apply(genCtx(),[doc]);
                         }
                         cb();
                     },
 
                     function update(h,cb){
-                        collection.update({_id:_id},{$set:doc},cb);
+                        collection.update({_id:_id},{$set:doc},{extendedCustomContext},cb);
                     },
 
                     function afterHooks(h,cb){

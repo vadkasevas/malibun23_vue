@@ -39,7 +39,7 @@ export class DataProvider<T>  extends EventEmitter{
         }
     }
 
-    subscribe(selector:Mongo.Selector<T>,options?:{sort?:{};skip?: number;limit?: number;fields?:{}}):this{
+    doSubscription(selector:Mongo.Selector<T>,options?:{sort?:{};skip?: number;limit?: number;fields?:{}}){
         this.eventDdp = new EventDdp();
         this.eventDdp.subscriptionName = this.eventDdpSubscriptionName;
         this.eventDdp.subscribe(this.meteorSubscriptionName,selector,options,{
@@ -47,6 +47,10 @@ export class DataProvider<T>  extends EventEmitter{
                 this.emit('ready');
             }
         });
+    }
+
+    subscribe(selector:Mongo.Selector<T>,options?:{sort?:{};skip?: number;limit?: number;fields?:{}}):this{
+        this.doSubscription(selector, options);
         let transform = this.collection._options['transform'];
         this.eventDdp.on('event',(type,data)=>{
             //if( this.constructor.name=='DataCountProvider' )
