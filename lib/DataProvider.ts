@@ -51,7 +51,7 @@ export class DataProvider<T>  extends EventEmitter{
 
     subscribe(selector:Mongo.Selector<T>,options?:{sort?:{};skip?: number;limit?: number;fields?:{}}):this{
         this.doSubscription(selector, options);
-        let transform = this.collection._options['transform'];
+        let transform = this.collection._options?this.collection._options['transform']:this.collection._transform;
         this.eventDdp.on('event',(type,data)=>{
             //if( this.constructor.name=='DataCountProvider' )
             //    console.log('event',type,data);
