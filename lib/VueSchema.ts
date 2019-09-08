@@ -299,9 +299,15 @@ MalibunCollection.prototype['vueMethods'] =function(){
                         cb();
                     },
                     function insert(h,cb){
-                        collection.insert(doc,{
-                            extendedCustomContext
-                        },cb);
+                        if(collection.vueSchema.insert){
+                            collection.vueSchema.insert(doc,{
+                                extendedCustomContext
+                            },cb)
+                        }else {
+                            collection.insert(doc, {
+                                extendedCustomContext
+                            }, cb);
+                        }
                     },
                     function afterHooks(h,cb){
                         if(collection.vueSchema.after&&collection.vueSchema.after.save){
@@ -389,7 +395,10 @@ MalibunCollection.prototype['vueMethods'] =function(){
                     },
 
                     function update(h,cb){
-                        collection.update({_id:_id},{$set:doc},{extendedCustomContext},cb);
+                        if(collection.vueSchema.update){
+                            collection.vueSchema.update({_id:_id},{$set:doc},{extendedCustomContext},cb);
+                        }else
+                            collection.update({_id:_id},{$set:doc},{extendedCustomContext},cb);
                     },
 
                     function afterHooks(h,cb){
