@@ -1,6 +1,8 @@
 ///<reference path="../typings/meteor/malibun23:stack.d.ts"/>
 import {MalibunCollection} from "meteor/malibun23:stack";
+//@ts-ignore
 import {_} from "meteor/underscore";
+//@ts-ignore
 import {Meteor} from 'meteor/meteor';
 
 function isPromise(obj) {
@@ -28,14 +30,21 @@ export class VueValidationBuilder {
         }
     }
 
+    custom(validator){
+        this.validators.push(validator);
+        return this;
+    }
+
     unique(collection:MalibunCollection<any>|string,keys:string[]|string|null=null):this{
         //@ts-ignore
         collection = _.isString(collection)?Meteor.connection._stores[collection]._getCollection():collection;
         this.validators.push(function(value,field,model){
             if(!keys)
                 keys = field.model;
-            if(!_.isArray(keys))
+            if(!_.isArray(keys)) {
+                //@ts-ignore
                 keys = [keys];
+            }
 
             let condition = {};
             _.each(keys,(key)=>{
