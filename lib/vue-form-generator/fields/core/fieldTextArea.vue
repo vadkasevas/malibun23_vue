@@ -9,7 +9,7 @@
 		:placeholder="schema.placeholder",
 		:readonly="schema.readonly",
 		:required="schema.required",
-		:rows="schema.rows || 2",
+		:rows="schema.rows || ''",
 		:name="schema.inputName",
 		v-attributes="'input'")
 </template>

@@ -13,7 +13,8 @@
                        :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated">
             </component>
             <div v-if="buttonVisibility(field)" class="buttons">
-                <button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
+                <button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)"
+                        :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
             </div>
         </div>
 
