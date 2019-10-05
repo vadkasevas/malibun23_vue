@@ -8,7 +8,7 @@
 			</span>
         </label>
 
-        <div class="field-wrap">
+        <div class="field-wrap" :class="getFieldWrapClasses(field)">
             <component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model"
                        :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated">
             </component>
@@ -192,6 +192,19 @@
                     font-weight: 600;
                 }
             }
+        }
+
+    }
+
+    .field-checkbox {
+        display: flex;
+        flex-wrap: wrap;
+        label {
+            order: 1;
+            padding-left: 10px;
+        }
+        input{
+            margin-top: 3px;
         }
     }
 </style>

@@ -4,6 +4,7 @@ import Vue from 'vue';
 // @ts-ignore
 /// <reference path="./typings/vue-form-generator.d.ts" />
 import * as VueFormGenerator from "./lib/MeteorVueFormGenerator/index";
+import './lib/vue-form-generator/formGenerator.css';
 // @ts-ignore
 import { FieldArray } from './client/vfg-field-array/index';
 
