@@ -21,6 +21,14 @@ export class VueSchemaBuilder{
         return this;
     }
 
+    withGroup(group){
+        if(_.isArray(group))
+            group={fields:group};
+        this.vueSchema.groups = this.vueSchema.groups || [];
+        this.vueSchema.groups.push(group);
+        return this;
+    }
+
     build():any{
         return __.cloneDeep( this.vueSchema );
     }
